@@ -1,15 +1,26 @@
 package controller;
+
+import java.sql.Timestamp;
 import java.util.ArrayList;
 import model.Producto;
 
 public class ProductoController {
 
-   public ArrayList<Producto> listarProductos(){
+    public ArrayList<Producto> listarProductos() {
         Producto producto = new Producto();
         return producto.getProductos();
     }
 
-    public static void addProcuto(Producto producto) {
+    public boolean insertProducto(String nombre, String referencia, int precio, int peso, String categoria, int stock, Timestamp fecha_creacion) {
+        Producto producto = new Producto();
+        producto.nombre = nombre;
+        producto.referencia = referencia;
+        producto.precio = precio;
+        producto.peso = peso;
+        producto.categoria = categoria;
+        producto.stock = stock;
+        producto.fecha_creacion = fecha_creacion;
+        return producto.insert();
 
     }
 

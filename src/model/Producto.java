@@ -5,18 +5,17 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.Timestamp;
 import java.util.ArrayList;
-import javax.swing.table.DefaultTableModel;
 
 public class Producto extends ConnectionDb {
 
-    int id;
-    String nombre;
-    String referencia;
-    int precio;
-    int peso;
-    String categoria;
-    int stock;
-    Timestamp fecha_creacion;
+    public int id;
+    public String nombre;
+    public String referencia;
+    public int precio;
+    public int peso;
+    public String categoria;
+    public int stock;
+    public Timestamp fecha_creacion;
     ConnectionDb connectionDb;
 
     public Producto() {
@@ -32,8 +31,6 @@ public class Producto extends ConnectionDb {
         this.stock = stock;
         this.fecha_creacion = fecha_creacion;
     }
-
-    
 
     public ArrayList<Producto> getProductos() {
         try {
@@ -63,6 +60,38 @@ public class Producto extends ConnectionDb {
         } catch (Exception e) {
             System.out.println("Error " + e.toString());
             return null;
+
+        }
+    }
+
+    public boolean insert() {
+        Long datetime = System.currentTimeMillis();
+        fecha_creacion = new Timestamp(datetime);
+        try {
+            Connection connection = connectionDb.getConnection();
+            String query = "INSERT INTO producto VALUES (null,?,?,?,?,?,?,?)";
+            PreparedStatement sentencia = connection.prepareStatement(query);
+            sentencia.setString(1, nombre);
+            sentencia.setString(2, referencia);
+            sentencia.setInt(3, precio);
+            sentencia.setInt(4, peso);
+            sentencia.setString(5, categoria);
+            sentencia.setInt(6, stock);
+            sentencia.setTimestamp(7, fecha_creacion);
+            int filasAfectadas = sentencia.executeUpdate();
+            connection.close();
+
+            if (filasAfectadas > 0) {
+                System.out.println("El producto se insertó correctamente");
+                return true;
+
+            } else {
+                System.out.println("El producto no se insertó");
+                return false;
+            }
+        } catch (Exception e) {
+            System.out.println("Error al agregar producto" + e.toString());
+            return false;
 
         }
     }
@@ -129,7 +158,7 @@ public class Producto extends ConnectionDb {
 
     @Override
     public String toString() {
-        return id + " - " + nombre + " - " + referencia + " - "  + precio + " - " + peso + " - "+ categoria + " - " + stock +  " - " + fecha_creacion ;
+        return id + " - " + nombre + " - " + referencia + " - " + precio + " - " + peso + " - " + categoria + " - " + stock + " - " + fecha_creacion;
     }
 
 }
