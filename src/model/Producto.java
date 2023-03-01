@@ -96,6 +96,86 @@ public class Producto extends ConnectionDb {
         }
     }
 
+    public boolean update() {
+        try {
+            Connection connection = connectionDb.getConnection();
+            String query = "UPDATE producto SET nombre=?,referencia=?,precio=?, peso=?,categoria=?, stock=?, fecha_creacion=? WHERE id=? ";
+            PreparedStatement sentencia = connection.prepareStatement(query);
+            sentencia.setString(1, nombre);
+            sentencia.setString(2, referencia);
+            sentencia.setInt(3, precio);
+            sentencia.setInt(4, peso);
+            sentencia.setString(5, categoria);
+            sentencia.setInt(6, stock);
+            sentencia.setTimestamp(7, fecha_creacion);
+            sentencia.setInt(8, id);
+            int filasAfectadas = sentencia.executeUpdate();
+            connection.close();
+
+            if (filasAfectadas > 0) {
+                System.out.println("El producto se actualizó");
+                return true;
+            } else {
+                System.out.println("El producto no se actualizó");
+                return false;
+            }
+
+        } catch (Exception e) {
+            System.out.println("Error al actualizar producto " + e.toString());
+            return false;
+        }
+
+    }
+
+    public boolean delete(int id) {
+        try {
+            Connection connection = connectionDb.getConnection();
+            String query = "DELETE FROM producto WHERE id=?";
+            PreparedStatement sentencia = connection.prepareStatement(query);
+            sentencia.setInt(1, id);
+            int filasAfectadas = sentencia.executeUpdate();
+            connection.close();
+            if (filasAfectadas > 0) {
+                System.out.println("Producto eliminado");
+                return true;
+            } else {
+                System.out.println("Producto no eliminado");
+                return false;
+            }
+        } catch (Exception e) {
+            System.out.println("Error al eliminar producto " + e.toString());
+            return false;
+        }
+    }
+
+    public Producto find(int id) {
+        try {
+            Connection connection = connectionDb.getConnection();
+            String query = "SELECT * FROM producto WHERE id=?";
+            PreparedStatement sentencia = connection.prepareStatement(query);
+            sentencia.setInt(1, id);
+            ResultSet rs = sentencia.executeQuery();
+            Producto producto = new Producto();
+            if (rs.next()) {
+                producto.id = rs.getInt(1);
+                producto.nombre = rs.getString(2);
+                producto.referencia = rs.getString(3);
+                producto.precio = rs.getInt(4);
+                producto.peso = rs.getInt(5);
+                producto.stock = rs.getInt(6);
+                producto.fecha_creacion = rs.getTimestamp(7);
+
+            } else {
+                producto = null;
+            }
+            connection.close();
+            return producto;
+        } catch (Exception e) {
+            System.out.println("Error " + e.toString());
+            return null;
+        }
+    }
+
     public int getId() {
         return id;
     }
