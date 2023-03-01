@@ -1,9 +1,10 @@
 package model;
 
+
 import java.sql.Connection;
 import java.sql.DriverManager;
 
-public class ConnectionDb {
+public class ConnectionDb extends controller.ProductoController {
 
     protected String driver = "com.mysql.jdbc.Driver";
     protected String user = "root";
