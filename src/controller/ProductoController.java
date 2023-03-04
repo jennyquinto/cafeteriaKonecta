@@ -23,6 +23,7 @@ public class ProductoController {
         return producto.insert();
 
     }
+   
 
     public boolean updateProducto(int id, String nombre, String referencia, int precio, int peso, String categoria, int stock, Timestamp fecha_creacion) {
         Producto producto = new Producto();
@@ -46,5 +47,7 @@ public class ProductoController {
         Producto producto = new Producto();
         return producto.delete(id);
     }
+    
+    
 }
 

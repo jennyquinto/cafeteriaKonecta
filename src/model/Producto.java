@@ -162,8 +162,9 @@ public class Producto extends ConnectionDb {
                 producto.referencia = rs.getString(3);
                 producto.precio = rs.getInt(4);
                 producto.peso = rs.getInt(5);
-                producto.stock = rs.getInt(6);
-                producto.fecha_creacion = rs.getTimestamp(7);
+                producto.categoria = rs.getString(6);
+                producto.stock = rs.getInt(7);                
+                producto.fecha_creacion = rs.getTimestamp(8);
 
             } else {
                 producto = null;
